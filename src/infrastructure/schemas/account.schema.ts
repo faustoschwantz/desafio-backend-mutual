@@ -1,15 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 @Schema()
-class Account {
+export class Account {
   @Prop({ required: true })
   cpf: string;
 
   @Prop({ required: true })
   name: string;
 
-  @Prop({ default: true })
-  created_at: Date;
+  @Prop({ default: Date.now })
+  created_at?: Date;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);
+
+export type AccountDocument = Account & Document;
