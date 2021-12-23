@@ -1,13 +1,17 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as helmet from 'helmet';
-import { AppModule } from './app.module';
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
     logger: ['error', 'warn'],
   });
+
+  app.useGlobalPipes(new ValidationPipe());
+  app.use(helmet());
 
   const config = new DocumentBuilder()
     .setTitle('Desafio Mutual')
@@ -18,8 +22,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document);
-
-  app.use(helmet());
 
   await app.listen(3000);
 }
