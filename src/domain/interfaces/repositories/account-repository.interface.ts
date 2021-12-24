@@ -4,4 +4,6 @@ export interface IAccountRepository {
   create(account: Account): Promise<string>;
 
   getByCPF(cpf: string): Promise<Account>;
+
+  getById(id: string): Promise<Account>;
 }
