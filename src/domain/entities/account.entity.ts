@@ -5,5 +5,5 @@ export class Account {
 
   name: string;
 
-  created_at: Date;
+  createdAt: Date;
 }

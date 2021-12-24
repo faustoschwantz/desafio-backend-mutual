@@ -18,6 +18,10 @@ export class AccountRepository implements IAccountRepository {
   }
 
   async getByCPF(cpf: string): Promise<Account> {
-    return this.accountModel.findOne({ cpf });
+    return this.accountModel.findOne({ cpf }).exec();
+  }
+
+  async getById(id: string): Promise<Account> {
+    return this.accountModel.findById(id).exec();
   }
 }

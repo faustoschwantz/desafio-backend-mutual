@@ -10,7 +10,7 @@ export class Account {
   name: string;
 
   @Prop({ default: Date.now })
-  created_at?: Date;
+  createdAt?: Date;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

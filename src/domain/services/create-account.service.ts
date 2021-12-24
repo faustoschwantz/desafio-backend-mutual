@@ -16,11 +16,11 @@ export class CreateAccountService implements ICreateAccountService {
   ) {}
 
   async execute(createAccountDto: CreateAccountDto): Promise<AccountDto> {
-    const findedAccount = await this.accountRepository.getByCPF(
+    const foundAccount = await this.accountRepository.getByCPF(
       createAccountDto.cpf,
     );
 
-    if (findedAccount)
+    if (foundAccount)
       throw new UnprocessableEntityException('CPF already exists');
 
     const id = await this.accountRepository.create(createAccountDto);
