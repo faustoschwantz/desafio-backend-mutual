@@ -1,19 +1,18 @@
-import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 @Schema()
-class Movment {
+export class Movement {
   @Prop({ required: true })
   accountId: string;
 
   @Prop({ required: true })
   value: number;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Account' })
-  account;
-
   @Prop({ default: Date.now })
-  created_at: Date;
+  createdAt?: Date;
 }
 
-export const MovementSchema = SchemaFactory.createForClass(Movment);
+export const MovementSchema = SchemaFactory.createForClass(Movement);
+
+export type MovementDocument = Movement & Document;
