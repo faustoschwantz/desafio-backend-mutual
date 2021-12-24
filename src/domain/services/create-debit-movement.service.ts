@@ -2,12 +2,10 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { AccountRepository } from 'src/infrastructure/repositories/account.repository';
 import { MovementRepository } from 'src/infrastructure/repositories/movement.repository';
 import { CreateMovementDto } from '../../application/movement/dto/create-movement.dto';
-import { ICreatedCreditMovementService } from '../interfaces/services/create-credit-movement-service.interface';
+import { ICreateDebitMovementService } from '../interfaces/services/create-debit-movement-service.interface';
 
 @Injectable()
-export class CreateCreditMovementService
-  implements ICreatedCreditMovementService
-{
+export class CreateDebitMovementService implements ICreateDebitMovementService {
   constructor(
     @Inject('IAccountRepository')
     private readonly accountRepository: AccountRepository,
@@ -22,7 +20,6 @@ export class CreateCreditMovementService
 
     if (!foundAccount) throw new NotFoundException('Account not found');
 
-    createNovementtDto.value = createNovementtDto.value * -1;
     await this.movementRepository.create(createNovementtDto);
   }
 }
