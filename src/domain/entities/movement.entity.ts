@@ -5,5 +5,5 @@ export class Movement {
 
   value: number;
 
-  created_at: Date;
+  createdAt: Date;
 }
