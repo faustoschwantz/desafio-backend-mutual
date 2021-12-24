@@ -15,14 +15,12 @@ export class CreateCreditMovementService
     private readonly movementRepository: MovementRepository,
   ) {}
 
-  async execute(createNovementtDto: CreateMovementDto): Promise<void> {
+  async execute(createMovimentDto: CreateMovementDto): Promise<void> {
     const foundAccount = await this.accountRepository.getById(
-      createNovementtDto.accountId,
+      createMovimentDto.accountId,
     );
-
     if (!foundAccount) throw new NotFoundException('Account not found');
 
-    createNovementtDto.value = createNovementtDto.value * -1;
-    await this.movementRepository.create(createNovementtDto);
+    await this.movementRepository.create(createMovimentDto);
   }
 }
