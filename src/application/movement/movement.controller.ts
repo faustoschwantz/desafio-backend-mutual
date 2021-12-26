@@ -21,7 +21,7 @@ export class MovementController {
   ) {}
 
   @Post('credit')
-  @ApiCreatedResponse()
+  @ApiCreatedResponse({ description: 'Created' })
   @ApiNotFoundResponse({ description: 'Account not found' })
   @ApiBody({ type: CreateMovementDto })
   createCredit(
@@ -31,7 +31,7 @@ export class MovementController {
   }
 
   @Post('debit')
-  @ApiCreatedResponse()
+  @ApiCreatedResponse({ description: 'Created' })
   @ApiNotFoundResponse({ description: 'Account not found' })
   @ApiUnprocessableEntityResponse({ description: 'Insufficient funds' })
   @ApiBody({ type: CreateMovementDto })

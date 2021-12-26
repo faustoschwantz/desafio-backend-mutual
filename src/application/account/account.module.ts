@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreateAccountService } from 'src/domain/services/create-account.service';
 import { GetAccountBalanceService } from 'src/domain/services/get-account-balance.service';
+import { TransferBetweenAccountsService } from 'src/domain/services/transfer-between-accounts.service';
+import { AccountHelper } from 'src/domain/shared/helpers/account.helper';
+import { MovementHelper } from 'src/domain/shared/helpers/movement.helper';
 import { AccountRepository } from 'src/infrastructure/repositories/account.repository';
 import { MovementRepository } from 'src/infrastructure/repositories/movement.repository';
 import {
@@ -30,10 +33,6 @@ import { AccountController } from './account.controller';
   controllers: [AccountController],
   providers: [
     {
-      provide: 'IAccountRepository',
-      useClass: AccountRepository,
-    },
-    {
       provide: 'ICreateAccountService',
       useClass: CreateAccountService,
     },
@@ -42,8 +41,24 @@ import { AccountController } from './account.controller';
       useClass: GetAccountBalanceService,
     },
     {
+      provide: 'ITransferBetweenAccountsService',
+      useClass: TransferBetweenAccountsService,
+    },
+    {
+      provide: 'IAccountRepository',
+      useClass: AccountRepository,
+    },
+    {
       provide: 'IMovementRepository',
       useClass: MovementRepository,
+    },
+    {
+      provide: 'AccountHelper',
+      useClass: AccountHelper,
+    },
+    {
+      provide: 'MovementHelper',
+      useClass: MovementHelper,
     },
   ],
 })

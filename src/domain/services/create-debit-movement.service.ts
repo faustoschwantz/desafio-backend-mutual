@@ -1,35 +1,23 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
-import { AccountRepository } from 'src/infrastructure/repositories/account.repository';
-import { MovementRepository } from 'src/infrastructure/repositories/movement.repository';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateMovementDto } from '../../application/movement/dto/create-movement.dto';
 import { ICreateDebitMovementService } from '../interfaces/services/create-debit-movement-service.interface';
-import { GetAccountBalanceService } from './get-account-balance.service';
+import { AccountHelper } from '../shared/helpers/account.helper';
+import { MovementHelper } from '../shared/helpers/movement.helper';
 
 @Injectable()
 export class CreateDebitMovementService implements ICreateDebitMovementService {
   constructor(
-    @Inject('IAccountRepository')
-    private readonly accountRepository: AccountRepository,
-    @Inject('IMovementRepository')
-    private readonly movementRepository: MovementRepository,
-    @Inject('IGetAccountBalanceService')
-    private readonly getAccountBalanceService: GetAccountBalanceService,
+    @Inject('AccountHelper')
+    private readonly accountHelper: AccountHelper,
+    @Inject('MovementHelper')
+    private readonly movementHelper: MovementHelper,
   ) {}
 
-  async execute({ accountId, value }: CreateMovementDto): Promise<void> {
-    const foundAccount = await this.accountRepository.getById(accountId);
-    if (!foundAccount) throw new NotFoundException('Account not found');
+  async execute(createMovementDto: CreateMovementDto): Promise<void> {
+    const { accountId, value } = createMovementDto;
+    await this.accountHelper.validateAccountsFound(accountId);
+    await this.accountHelper.validateAccountBalance(accountId, value);
 
-    const { balance } = await this.getAccountBalanceService.execute(accountId);
-    if (balance < value)
-      throw new UnprocessableEntityException('Insufficient funds');
-
-    const negativeValue = value * -1;
-    await this.movementRepository.create({ accountId, value: negativeValue });
+    return this.movementHelper.createDebitMovement(createMovementDto);
   }
 }

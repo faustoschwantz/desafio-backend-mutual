@@ -3,6 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CreateCreditMovementService } from 'src/domain/services/create-credit-movement.service';
 import { CreateDebitMovementService } from 'src/domain/services/create-debit-movement.service';
 import { GetAccountBalanceService } from 'src/domain/services/get-account-balance.service';
+import { AccountHelper } from 'src/domain/shared/helpers/account.helper';
+import { MovementHelper } from 'src/domain/shared/helpers/movement.helper';
 import { AccountRepository } from 'src/infrastructure/repositories/account.repository';
 import { MovementRepository } from 'src/infrastructure/repositories/movement.repository';
 import {
@@ -49,6 +51,14 @@ import { MovementController } from './movement.controller';
     {
       provide: 'IAccountRepository',
       useClass: AccountRepository,
+    },
+    {
+      provide: 'AccountHelper',
+      useClass: AccountHelper,
+    },
+    {
+      provide: 'MovementHelper',
+      useClass: MovementHelper,
     },
   ],
 })

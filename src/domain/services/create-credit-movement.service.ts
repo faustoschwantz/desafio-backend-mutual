@@ -1,26 +1,22 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { AccountRepository } from 'src/infrastructure/repositories/account.repository';
-import { MovementRepository } from 'src/infrastructure/repositories/movement.repository';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateMovementDto } from '../../application/movement/dto/create-movement.dto';
 import { ICreatedCreditMovementService } from '../interfaces/services/create-credit-movement-service.interface';
+import { AccountHelper } from '../shared/helpers/account.helper';
+import { MovementHelper } from '../shared/helpers/movement.helper';
 
 @Injectable()
 export class CreateCreditMovementService
   implements ICreatedCreditMovementService
 {
   constructor(
-    @Inject('IAccountRepository')
-    private readonly accountRepository: AccountRepository,
-    @Inject('IMovementRepository')
-    private readonly movementRepository: MovementRepository,
+    @Inject('AccountHelper')
+    private readonly accountHelper: AccountHelper,
+    @Inject('MovementHelper')
+    private readonly movementHelper: MovementHelper,
   ) {}
 
   async execute(createMovimentDto: CreateMovementDto): Promise<void> {
-    const foundAccount = await this.accountRepository.getById(
-      createMovimentDto.accountId,
-    );
-    if (!foundAccount) throw new NotFoundException('Account not found');
-
-    await this.movementRepository.create(createMovimentDto);
+    await this.accountHelper.validateAccountsFound(createMovimentDto.accountId);
+    return this.movementHelper.createCreditMovement(createMovimentDto);
   }
 }

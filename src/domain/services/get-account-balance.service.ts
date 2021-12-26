@@ -1,21 +1,19 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { AccountBalanceDto } from 'src/application/account/dto/account-balance.dto';
-import { AccountRepository } from 'src/infrastructure/repositories/account.repository';
 import { MovementRepository } from 'src/infrastructure/repositories/movement.repository';
+import { IGetAccountBalanceService } from '../interfaces/services/get-account-balance-service.interface';
+import { AccountHelper } from '../shared/helpers/account.helper';
 
-export class GetAccountBalanceService implements GetAccountBalanceService {
+export class GetAccountBalanceService implements IGetAccountBalanceService {
   constructor(
-    @Inject('IAccountRepository')
-    private readonly accountRepository: AccountRepository,
+    @Inject('AccountHelper')
+    private readonly accountHelper: AccountHelper,
     @Inject('IMovementRepository')
     private readonly movementRepository: MovementRepository,
   ) {}
 
   async execute(accountId: string): Promise<AccountBalanceDto> {
-    const foundAccount = await this.accountRepository.getById(accountId);
-
-    if (!foundAccount) throw new NotFoundException('Account not found');
-
+    await this.accountHelper.validateAccountsFound(accountId);
     return this.movementRepository.getBalanceByAccountId(accountId);
   }
 }
