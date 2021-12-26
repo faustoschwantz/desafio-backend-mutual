@@ -4,15 +4,17 @@ import { Model } from 'mongoose';
 import { AccountBalanceDto } from 'src/application/account/dto/account-balance.dto';
 import { IMovementRepository } from 'src/domain/interfaces/repositories/movement-repository.interface';
 import { Movement, MovementDocument } from '../schemas/movement.schema';
+import { BaseRepository } from './base.repository';
 
 @Injectable()
-export class MovementRepository implements IMovementRepository {
+export class MovementRepository
+  extends BaseRepository<MovementDocument>
+  implements IMovementRepository
+{
   constructor(
     @InjectModel(Movement.name) private movementModel: Model<MovementDocument>,
-  ) {}
-
-  async create(movement: Movement): Promise<void> {
-    new this.movementModel(movement).save();
+  ) {
+    super(movementModel);
   }
 
   async getBalanceByAccountId(accountId: string): Promise<AccountBalanceDto> {

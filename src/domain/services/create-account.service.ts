@@ -23,7 +23,7 @@ export class CreateAccountService implements ICreateAccountService {
     if (foundAccount)
       throw new UnprocessableEntityException('CPF already exists');
 
-    const id = await this.accountRepository.create(createAccountDto);
+    const { id } = await this.accountRepository.create(createAccountDto);
     return { id, ...createAccountDto };
   }
 }

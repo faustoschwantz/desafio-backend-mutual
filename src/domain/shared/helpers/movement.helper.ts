@@ -12,7 +12,7 @@ export class MovementHelper {
   async createCreditMovement(
     createMovimentDto: CreateMovementDto,
   ): Promise<void> {
-    this.movementRepository.create(createMovimentDto);
+    await this.movementRepository.create(createMovimentDto);
   }
 
   async createDebitMovement({
