@@ -2,7 +2,7 @@ import { TransferBetweenAccountsDto } from 'src/application/account/dto/transfer
 
 export interface ITransferBetweenAccountsService {
   execute(
-    senderAccountId,
+    senderAccountId: string,
     createMovementDto: TransferBetweenAccountsDto,
   ): Promise<void>;
 }
