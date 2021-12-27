@@ -1,4 +1,7 @@
-import { UnprocessableEntityException } from '@nestjs/common';
+import {
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountBalanceDto } from 'src/application/account/dto/account-balance.dto';
 import { IAccountRepository } from 'src/domain/interfaces/repositories/account-repository.interface';
@@ -8,6 +11,13 @@ import { AccountHelper } from './account.helper';
 
 const balanceFake = 10;
 const accountIdFake = 'any-id';
+
+const accountFake: Account = {
+  cpf: 'any-cpf',
+  name: 'any-name',
+};
+
+const accountIdsFake = [accountIdFake, accountIdFake];
 
 describe('AccountHelper', () => {
   let helper: AccountHelper;
@@ -24,7 +34,9 @@ describe('AccountHelper', () => {
         {
           provide: 'IAccountRepository',
           useFactory: (): Partial<IAccountRepository> => ({
-            getById: jest.fn((_id: string): Promise<Account> => undefined),
+            getById: jest.fn(
+              async (_id: string): Promise<Account> => accountFake,
+            ),
           }),
         },
         {
@@ -84,6 +96,36 @@ describe('AccountHelper', () => {
 
       expect(getBalanceByAccountIdSpy).toBeCalledWith(accountIdFake);
       expect(response).toBeUndefined();
+    });
+  });
+
+  describe('When call the validateAccountsFound', () => {
+    it('Should be return a NotFoundException if accounts do not found', async () => {
+      const getByIdSpy = jest
+        .spyOn(accountRepositoryStub, 'getById')
+        .mockReturnValue(undefined);
+
+      const responsePromise = helper.validateAccountsFound(...accountIdsFake);
+
+      await expect(responsePromise).rejects.toThrow(NotFoundException);
+      expect(getByIdSpy).toBeCalledTimes(accountIdsFake.length);
+
+      accountIdsFake.forEach((id) => {
+        expect(getByIdSpy).toBeCalledWith(id);
+      });
+    });
+
+    it('Should be call all methods correctly', async () => {
+      const getByIdSpy = jest.spyOn(accountRepositoryStub, 'getById');
+
+      const response = await helper.validateAccountsFound(...accountIdsFake);
+
+      expect(response).toBeUndefined();
+      expect(getByIdSpy).toBeCalledTimes(accountIdsFake.length);
+
+      accountIdsFake.forEach((id) => {
+        expect(getByIdSpy).toBeCalledWith(id);
+      });
     });
   });
 });
