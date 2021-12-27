@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "5953d13e-e163-4fc3-bbdc-8c3d1c741647",
+		"name": "Mutual",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local-host}}/ping",
+							"host": [
+								"{{local-host}}"
+							],
+							"path": [
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local-host}}/health",
+							"host": [
+								"{{local-host}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cpf\": \"02577610539\",\n  \"name\": \"FD Doe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local-host}}/account",
+							"host": [
+								"{{local-host}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account/:id/transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountId\": \"61c86d8490dfaa10958472b1\",\n  \"value\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local-host}}/account/61c8a81184217d4eb0298d99/transfer",
+							"host": [
+								"{{local-host}}"
+							],
+							"path": [
+								"account",
+								"61c8a81184217d4eb0298d99",
+								"transfer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account/:id/balaance",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local-host}}/account/61c8a81184217d4eb0298d99/balance",
+							"host": [
+								"{{local-host}}"
+							],
+							"path": [
+								"account",
+								"61c8a81184217d4eb0298d99",
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "debit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountId\": \"61c8a81184217d4eb0298d99\",\n  \"value\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local-host}}/movement/debit",
+							"host": [
+								"{{local-host}}"
+							],
+							"path": [
+								"movement",
+								"debit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "credit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountId\": \"61c8a81184217d4eb0298d99\",\n  \"value\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local-host}}/movement/credit",
+							"host": [
+								"{{local-host}}"
+							],
+							"path": [
+								"movement",
+								"credit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Production",
+			"item": [
+				{
+					"name": "ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prod-host}}/ping",
+							"host": [
+								"{{prod-host}}"
+							],
+							"path": [
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prod-host}}/health",
+							"host": [
+								"{{prod-host}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cpf\": \"02577610539\",\n  \"name\": \"Jane Doe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod-host}}/account",
+							"host": [
+								"{{prod-host}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account/:id/transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountId\": \"61c91b93e728d541eca9d3ec\",\n  \"value\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod-host}}/account/61c91b4be728d541eca9d3df/transfer",
+							"host": [
+								"{{prod-host}}"
+							],
+							"path": [
+								"account",
+								"61c91b4be728d541eca9d3df",
+								"transfer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account/:id/balaance",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod-host}}/account/61c91b4be728d541eca9d3df/balance",
+							"host": [
+								"{{prod-host}}"
+							],
+							"path": [
+								"account",
+								"61c91b4be728d541eca9d3df",
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "debit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountId\": \"61c91e43e728d541eca9d413\",\n  \"value\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod-host}}/movement/debit",
+							"host": [
+								"{{prod-host}}"
+							],
+							"path": [
+								"movement",
+								"debit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "credit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountId\": \"61c91e43e728d541eca9d413\",\n  \"value\": 550\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod-host}}/movement/credit",
+							"host": [
+								"{{prod-host}}"
+							],
+							"path": [
+								"movement",
+								"credit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local-host",
+			"value": "localhost:3000"
+		},
+		{
+			"key": "prod-host",
+			"value": "https://desafio-backend-mutual.herokuapp.com"
+		}
+	]
+}
