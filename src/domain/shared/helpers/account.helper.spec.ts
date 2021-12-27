@@ -6,6 +6,9 @@ import { IMovementRepository } from 'src/domain/interfaces/repositories/movement
 import { Account } from 'src/infrastructure/schemas/account.schema';
 import { AccountHelper } from './account.helper';
 
+const balanceFake = 10;
+const accountIdFake = 'any-id';
+
 describe('AccountHelper', () => {
   let helper: AccountHelper;
   let accountRepositoryStub: IAccountRepository;
@@ -28,7 +31,9 @@ describe('AccountHelper', () => {
           provide: 'IMovementRepository',
           useFactory: (): Partial<IMovementRepository> => ({
             getBalanceByAccountId: jest.fn(
-              (_accountId: string): Promise<AccountBalanceDto> => undefined,
+              async (_accountId: string): Promise<AccountBalanceDto> => ({
+                balance: balanceFake,
+              }),
             ),
           }),
         },
@@ -51,10 +56,7 @@ describe('AccountHelper', () => {
 
   describe('When call the validateAccountBalance', () => {
     it('Should be return a UnprocessableEntityException if Insufficient funds', async () => {
-      const balanceFake = 10;
-      const accountIdFake = 'any-id';
-
-      const getByIdSpy = jest
+      const getBalanceByAccountIdSpy = jest
         .spyOn(movementRepositoryStub, 'getBalanceByAccountId')
         .mockReturnValue(Promise.resolve({ balance: balanceFake - 1 }));
 
@@ -66,7 +68,22 @@ describe('AccountHelper', () => {
       await expect(responsePromise).rejects.toThrow(
         UnprocessableEntityException,
       );
-      expect(getByIdSpy).toBeCalledWith(accountIdFake);
+      expect(getBalanceByAccountIdSpy).toBeCalledWith(accountIdFake);
+    });
+
+    it('Should be call all methods correctly', async () => {
+      const getBalanceByAccountIdSpy = jest.spyOn(
+        movementRepositoryStub,
+        'getBalanceByAccountId',
+      );
+
+      const response = await helper.validateAccountBalance(
+        accountIdFake,
+        balanceFake,
+      );
+
+      expect(getBalanceByAccountIdSpy).toBeCalledWith(accountIdFake);
+      expect(response).toBeUndefined();
     });
   });
 });
