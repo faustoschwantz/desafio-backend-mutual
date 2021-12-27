@@ -1,3 +1,4 @@
+import { UnprocessableEntityException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountBalanceDto } from 'src/application/account/dto/account-balance.dto';
 import { IAccountRepository } from 'src/domain/interfaces/repositories/account-repository.interface';
@@ -46,5 +47,26 @@ describe('AccountHelper', () => {
     expect(helper).toBeDefined();
     expect(accountRepositoryStub).toBeDefined();
     expect(movementRepositoryStub).toBeDefined();
+  });
+
+  describe('When call the validateAccountBalance', () => {
+    it('Should be return a UnprocessableEntityException if Insufficient funds', async () => {
+      const balanceFake = 10;
+      const accountIdFake = 'any-id';
+
+      const getByIdSpy = jest
+        .spyOn(movementRepositoryStub, 'getBalanceByAccountId')
+        .mockReturnValue(Promise.resolve({ balance: balanceFake - 1 }));
+
+      const responsePromise = helper.validateAccountBalance(
+        accountIdFake,
+        balanceFake,
+      );
+
+      await expect(responsePromise).rejects.toThrow(
+        UnprocessableEntityException,
+      );
+      expect(getByIdSpy).toBeCalledWith(accountIdFake);
+    });
   });
 });
