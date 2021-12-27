@@ -4,9 +4,17 @@ import { IGetAccountBalanceService } from 'src/domain/interfaces/services/get-ac
 import { ITransferBetweenAccountsService } from 'src/domain/interfaces/services/transfer-between-accounts-service.interface';
 import { AccountController } from './account.controller';
 import { AccountBalanceDto } from './dto/account-balance.dto';
+import { AccountIdDto } from './dto/account-id.dto';
 import { AccountDto } from './dto/account.dto';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { TransferBetweenAccountsDto } from './dto/transfer-account.dto';
+
+const accountIdDtoFake: AccountIdDto = { id: 'any-id' };
+
+const createMovementDtoFake: TransferBetweenAccountsDto = {
+  accountId: 'any-id',
+  value: 500,
+};
 
 describe('AccountController', () => {
   let controller: AccountController;
@@ -68,5 +76,25 @@ describe('AccountController', () => {
     expect(createAccountServiceStub).toBeDefined();
     expect(getAccountBalanceServiceStub).toBeDefined();
     expect(transferBetweenAccountsServiceStub).toBeDefined();
+  });
+
+  describe('When a transfer between accounts is called', () => {
+    it('Should be call the method transfer and execute the TransferBetweenAccountsService', async () => {
+      const transferBetweenAccountsServiceSpy = jest.spyOn(
+        transferBetweenAccountsServiceStub,
+        'execute',
+      );
+
+      const response = await controller.transfer(
+        accountIdDtoFake,
+        createMovementDtoFake,
+      );
+
+      expect(transferBetweenAccountsServiceSpy).toBeCalledWith(
+        accountIdDtoFake.id,
+        createMovementDtoFake,
+      );
+      expect(response).toBeNull();
+    });
   });
 });
