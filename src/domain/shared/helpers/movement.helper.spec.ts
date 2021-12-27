@@ -1,6 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CreateMovementDto } from 'src/application/movement/dto/create-movement.dto';
 import { IMovementRepository } from 'src/domain/interfaces/repositories/movement-repository.interface';
 import { MovementHelper } from './movement.helper';
+
+const movementFake: CreateMovementDto = {
+  accountId: 'any-id',
+  value: 10,
+};
+
+const DebitMovementFake: CreateMovementDto = {
+  accountId: 'any-id',
+  value: -10,
+};
 
 describe('MovementHelper', () => {
   let helper: MovementHelper;
@@ -15,7 +26,7 @@ describe('MovementHelper', () => {
         },
         {
           provide: 'IMovementRepository',
-          useFactory: (): Partial<IMovementRepository> => ({
+          useFactory: () => ({
             create: jest.fn(),
           }),
         },
@@ -31,5 +42,26 @@ describe('MovementHelper', () => {
   it('should be defined', () => {
     expect(helper).toBeDefined();
     expect(movementRepositoryStub).toBeDefined();
+  });
+
+  describe('When call the createCreditMovement', () => {
+    it('Should be call all methods correctly', async () => {
+      const createSpy = jest.spyOn(movementRepositoryStub, 'create');
+
+      const response = await helper.createCreditMovement(movementFake);
+
+      expect(response).toBeUndefined();
+      expect(createSpy).toBeCalledWith(movementFake);
+    });
+  });
+
+  describe('When call the createDebitMovement', () => {
+    it('Should be call all methods correctly', async () => {
+      const createSpy = jest.spyOn(movementRepositoryStub, 'create');
+      const response = await helper.createDebitMovement(movementFake);
+
+      expect(response).toBeUndefined();
+      expect(createSpy).toBeCalledWith(DebitMovementFake);
+    });
   });
 });
