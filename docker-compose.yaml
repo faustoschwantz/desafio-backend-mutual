@@ -6,7 +6,7 @@ services:
       context: .
     container_name: mutual-api-dev
     env_file: .env.development
-    entrypoint: npm run start:dev
+    entrypoint: npm run start:docker
     ports:
       - 3000:3000
     depends_on:

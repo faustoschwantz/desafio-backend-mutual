@@ -21,7 +21,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "prepare": "husky install",
     "git-commit-msg-linter": "^3.2.8",
-    "husky": "^7.0.4"
+    "husky": "^7.0.4",
+    "start:docker": "npm test && npm run start:dev",
+    "start:heroku": "npm test && npm run start:prod"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
