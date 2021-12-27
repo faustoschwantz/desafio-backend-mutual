@@ -32,7 +32,7 @@ describe('AccountController', () => {
             execute: jest.fn(
               async (
                 _createAccountDto: CreateAccountDto,
-              ): Promise<AccountDto> => null,
+              ): Promise<AccountDto> => undefined,
             ),
           }),
         },
@@ -40,7 +40,8 @@ describe('AccountController', () => {
           provide: 'IGetAccountBalanceService',
           useFactory: (): IGetAccountBalanceService => ({
             execute: jest.fn(
-              async (_accountId: string): Promise<AccountBalanceDto> => null,
+              async (_accountId: string): Promise<AccountBalanceDto> =>
+                undefined,
             ),
           }),
         },
@@ -51,7 +52,7 @@ describe('AccountController', () => {
               async (
                 _senderAccountId: string,
                 _createMovementDto: TransferBetweenAccountsDto,
-              ): Promise<void> => null,
+              ): Promise<void> => undefined,
             ),
           }),
         },
@@ -94,7 +95,7 @@ describe('AccountController', () => {
         accountIdDtoFake.id,
         createMovementDtoFake,
       );
-      expect(response).toBeNull();
+      expect(response).toBeUndefined();
     });
   });
 });
